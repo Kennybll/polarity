@@ -2,9 +2,9 @@
 import { app, Menu, shell, BrowserWindow } from 'electron';
 
 export default class MenuBuilder {
-  mainWindow: BrowserWindow;
+  mainWindow;
 
-  constructor(mainWindow: BrowserWindow) {
+  constructor(mainWindow) {
     this.mainWindow = mainWindow;
   }
 
@@ -45,13 +45,9 @@ export default class MenuBuilder {
 
   buildDarwinTemplate() {
     const subMenuAbout = {
-      label: 'Vessel',
+      label: 'Polarity',
       submenu: [
-        { label: 'About Vessel', selector: 'orderFrontStandardAboutPanel:' },
-        { type: 'separator' },
-        { label: 'Services', submenu: [] },
-        { type: 'separator' },
-        { label: 'Hide Vessel', accelerator: 'Command+H', selector: 'hide:' },
+        { label: 'Hide Polarity', accelerator: 'Command+H', selector: 'hide:' },
         { label: 'Hide Others', accelerator: 'Command+Shift+H', selector: 'hideOtherApplications:' },
         { label: 'Show All', selector: 'unhideAllApplications:' },
         { type: 'separator' },
@@ -78,14 +74,6 @@ export default class MenuBuilder {
         { label: 'Toggle Developer Tools', accelerator: 'Alt+Command+I', click: () => { this.mainWindow.toggleDevTools(); } }
       ]
     };
-    // const subMenuViewProd = {
-    //   label: 'View',
-    //   submenu: [
-    //     { label: 'Reload', accelerator: 'Command+R', click: () => { this.mainWindow.webContents.reload(); } },
-    //     { label: 'Toggle Full Screen', accelerator: 'Ctrl+Command+F', click: () => { this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()); } },
-    //     { label: 'Toggle Developer Tools', accelerator: 'Alt+Command+I', click: () => { this.mainWindow.toggleDevTools(); } }
-    //   ]
-    // };
     const subMenuWindow = {
       label: 'Window',
       submenu: [
@@ -98,15 +86,9 @@ export default class MenuBuilder {
     const subMenuHelp = {
       label: 'Help',
       submenu: [
-        { label: 'Source Code (Github)', click() { shell.openExternal('https://github.com/aaroncox/vessel'); } },
-        { label: 'Report Bug (Github)', click() { shell.openExternal('https://github.com/aaroncox/vessel/issues'); } },
-        { label: 'Releases (Github)', click() { shell.openExternal('https://github.com/aaroncox/vessel/releases'); } }
+        { label: 'Source Code (Github)', click() { shell.openExternal('https://github.com/Kennybll/polarity'); } }
       ]
     };
-
-    // const subMenuView = process.env.NODE_ENV === 'development'
-    //   ? subMenuViewDev
-    //   : subMenuViewProd;
 
     const subMenuView = subMenuViewDev;
 
@@ -174,9 +156,7 @@ export default class MenuBuilder {
     }, {
       label: 'Help',
       submenu: [
-        { label: 'Source Code (Github)', click() { shell.openExternal('https://github.com/aaroncox/vessel'); } },
-        { label: 'Report Bug (Github)', click() { shell.openExternal('https://github.com/aaroncox/vessel/issues'); } },
-        { label: 'Releases (Github)', click() { shell.openExternal('https://github.com/aaroncox/vessel/releases'); } }
+        { label: 'Source Code (Github)', click() { shell.openExternal('https://github.com/Kennybll/polarity'); } }
       ]
     }];
 

@@ -9,15 +9,14 @@ import preferences from './preferences';
 import processing from './processing';
 import steem from './steem';
 
-
 const rootReducer = combineReducers({
   account,
   keys,
   router,
   preferences,
   processing,
-  steem,
-  intl: intlReducer
+  intl: intlReducer,
+  steem
 });
 
 export default rootReducer;

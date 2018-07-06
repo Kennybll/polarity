@@ -4,16 +4,12 @@ import {
 } from '../actions/preferences';
 
 const defaultState = {
-  steemd_node: 'https://rpc.buildteam.io'
+  steemd_node: 'https://prodnet.scorum.com'
 };
 
 export type preferencesStateType = {};
 
-type actionType = {
-  type: string
-};
-
-export default function processing(state: any = defaultState, action: actionType) {
+export default function processing(state = defaultState, action) {
   // console.log('>>> reducers/preferences', state, action);
   switch (action.type) {
     case SET_PREFERENCE:

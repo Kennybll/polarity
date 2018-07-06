@@ -4,10 +4,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button, Header, Icon, Message } from 'semantic-ui-react';
 
-import ServerSelect from '../components/global/ServerSelect'
-import ServerReconnect from '../components/global/ServerReconnect'
+import ServerReconnect from '../components/global/ServerReconnect';
 import * as PreferencesActions from '../actions/preferences';
-import * as SteemActions from '../actions/steem';
 
 class ServerStatus extends Component {
 
@@ -35,7 +33,6 @@ class ServerStatus extends Component {
       message = (
         <Message attached='top' error color='red' size='big' style={{paddingLeft: '102px'}}>
           <Header textAlign='center'>
-            <ServerSelect {...this.props} />
             <ServerReconnect {...this.props} />
             <Icon name='warning sign' />
             <Header.Content>
@@ -51,15 +48,15 @@ class ServerStatus extends Component {
 
 function mapStateToProps(state) {
   return {
-    account: state.account
+    account: state.account,
+    steem: state.steem
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      ...PreferencesActions,
-      ...SteemActions
+      ...PreferencesActions
     }, dispatch)
   };
 }

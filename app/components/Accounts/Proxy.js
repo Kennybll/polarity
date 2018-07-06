@@ -121,7 +121,7 @@ export default class AccountsProxy extends Component {
     const accounts = names.map((name) => {
       const proxy = this.props.account.accounts[name].proxy;
       const hasProxy = (proxy && proxy !== "");
-      const shares = this.props.account.accounts[name].vesting_shares.split(" ")[0];
+      const shares = this.props.account.accounts[name].scorumpower.split(" ")[0];
       return (
         <Table.Row key={name}>
           <Table.Cell>
@@ -133,8 +133,8 @@ export default class AccountsProxy extends Component {
           <Table.Cell textAlign="center">
             <Header size="small">
               {(hasProxy)
-                ? <Icon size="large" color="green" name="checkmark" />
-                : <Icon size="large" color="red" name="cancel" />
+                ? <i className="fas fa-check"></i>
+                : <i className="fas fa-times"></i>
               }
             </Header>
           </Table.Cell>
@@ -143,13 +143,13 @@ export default class AccountsProxy extends Component {
           </Table.Cell>
           <Table.Cell>
             <Button
-              icon="edit"
+              icon={<i className="fas fa-edit"></i>}
               color="blue"
               onClick={this.handleEditProxy}
               value={name}
             />
             <Button
-              icon="cancel"
+              icon={<i className="fas fa-times"></i>}
               color="red"
               disabled={!hasProxy || account_set_voting_proxy_pending}
               onClick={this.handleCancelProxy}
@@ -174,7 +174,7 @@ export default class AccountsProxy extends Component {
                 Name
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
-                VESTS
+                SP
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 Proxied

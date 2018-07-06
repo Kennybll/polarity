@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import steem from 'steem';
+import scorum from '../../utils/scorum';
 import { Button, Checkbox, Divider, Form, Grid, Header, Message, Segment, Table } from 'semantic-ui-react';
 
 export default class KeysMemo extends Component {
@@ -31,9 +31,9 @@ export default class KeysMemo extends Component {
 
   validate = (newState) => {
     const errors = {};
-    errors.wif_error_invalid = !steem.auth.isWif(newState.wif);
+    errors.wif_error_invalid = !scorum.auth.isWif(newState.wif);
     errors.wif_not_valid = true;
-    if (newState.wif && steem.auth.wifIsValid(newState.wif, newState.public) === true) {
+    if (newState.wif && scorum.auth.wifIsValid(newState.wif, newState.public) === true) {
       errors.wif_not_valid = false;
     }
     return errors;
@@ -84,7 +84,7 @@ export default class KeysMemo extends Component {
       warning = (
         <Message
           error
-          icon="warning"
+          icon={<i className="fas fa-exclamation-triangle"></i>}
           content={message}
         />
       );
@@ -93,7 +93,7 @@ export default class KeysMemo extends Component {
       <Segment padded>
         <Message
           error
-          icon="warning"
+          icon={<i className="fas fa-exclamation-triangle"></i>}
           content="This feature is intended for advanced users only, please make sure you know what you're doing while encrypting memos. Using this feature incorrectly may cause the loss of funds deposited to an exchange."
         />
         <Header>

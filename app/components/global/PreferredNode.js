@@ -18,9 +18,9 @@ export default class RPC extends Component {
       <Form onValidSubmit={this.onValidSubmit}>
 
         <Header>
-          Preferred Steem Node
+          Preferred Scorum Node
           <Header.Subheader>
-            Configure which Steem node your wallet connects to in order to broadcast transactions.
+            Configure which Scorum node your wallet connects to in order to broadcast transactions.
           </Header.Subheader>
         </Header>
 
@@ -28,7 +28,7 @@ export default class RPC extends Component {
           <Grid>
             <Grid.Column width={9}>
               <Form.Input
-                label="Steem RPC Node"
+                label="Scorum RPC Node"
                 name="steemd_node"
                 instantValidation
                 validations="isUrl"

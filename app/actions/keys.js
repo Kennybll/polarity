@@ -1,6 +1,5 @@
 // @flow
-import steem from 'steem';
-import type { keysStateType } from '../reducers/keys';
+import scorum from '../utils/scorum';
 import * as AccountActions from './account';
 import {
   PROCESSING_ACCOUNT_LOADING,
@@ -33,13 +32,13 @@ export const KEY_CREATE_PROMPT = 'KEY_CREATE_PROMPT';
 
 
 export function addKey(account: string, wif: string) {
-  const isValidKey = steem.auth.isWif(wif);
+  const isValidKey = scorum.auth.isWif(wif);
   if (isValidKey) {
     return (dispatch: () => void) => {
       dispatch({
         type: PROCESSING_ACCOUNT_LOADING
       });
-      steem.api.getAccounts([account], (err, result) => {
+      scorum.api.getAccounts([account], (err, result) => {
         // Account not found
         if (err || !result.length) {
           dispatch({
@@ -50,7 +49,7 @@ export function addKey(account: string, wif: string) {
           });
         }
         if (result && result.length) {
-          const derivedKey = steem.auth.wifToPublic(wif);
+          const derivedKey = scorum.auth.wifToPublic(wif);
           const keyTypes = getKeyType(derivedKey, result[0]);
           if (keyTypes.length > 0) {
             // Correct key + weight, save keyAuths
@@ -205,9 +204,9 @@ export function addMemoKey(account: string, wif: string) {
   const isValidKey = steem.auth.isWif(wif);
   if (isValidKey) {
     return (dispatch: () => void) => {
-      steem.api.getAccounts([account], (err, result) => {
+      scorum.api.getAccounts([account], (err, result) => {
         if (result && result.length) {
-          const derivedKey = steem.auth.wifToPublic(wif);
+          const derivedKey = scorum.auth.wifToPublic(wif);
           if (derivedKey === result[0].memo_key) {
             const payload = {
               account,
@@ -231,7 +230,7 @@ export function addMemoKey(account: string, wif: string) {
 
 export function addMemoKeyPrompt(account: string) {
   return (dispatch: () => void) => {
-    steem.api.getAccounts([account], (err, result) => {
+    scorum.api.getAccounts([account], (err, result) => {
       dispatch({
         type: KEY_ADD_MEMO_PROMPT,
         payload: {

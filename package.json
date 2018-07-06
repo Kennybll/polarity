@@ -1,8 +1,8 @@
 {
-  "name": "vessel",
-  "productName": "vessel",
+  "name": "polarity",
+  "productName": "polarity",
   "version": "0.2.2",
-  "description": "A simple wallet for managing your Steem accounts.",
+  "description": "A simple wallet for managing your Scorum accounts.",
   "scripts": {
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 node --trace-warnings ./test/runTests.js",
     "test-all": "npm run lint && npm run flow && npm run test && npm run build && npm run test-e2e",
@@ -33,8 +33,8 @@
   },
   "browserslist": "electron 1.8",
   "build": {
-    "productName": "Vessel",
-    "appId": "com.greymass.vessel",
+    "productName": "Polarity",
+    "appId": "com.kennybll.polarity",
     "files": [
       "dist/",
       "node_modules/",
@@ -45,11 +45,11 @@
     ],
     "protocols": [
       {
-        "name": "steem",
+        "name": "scorum",
         "role": "Viewer",
         "schemes": [
-          "steem",
-          "vessel"
+          "scorum",
+          "polarity"
         ]
       }
     ],
@@ -80,16 +80,16 @@
     "linux": {
       "category": "Network",
       "desktop": {
-        "Name": "vessel",
+        "Name": "polarity",
         "Version": "0.2.2",
-        "GenericName": "Steem Client",
-        "X-GNOME-FullName": "vessel",
-        "Comment": "A simple wallet for managing your Steem accounts.",
+        "GenericName": "Scorum Client",
+        "X-GNOME-FullName": "polarity",
+        "Comment": "A simple wallet for managing your Scorum accounts.",
         "Type": "Application",
         "Terminal": "false",
         "StartupNotify": "false",
         "Categories": "Network;",
-        "MimeType": "application/x-steem;x-scheme-handler/steem;"
+        "MimeType": "application/x-scorum;x-scheme-handler/scorum;"
       },
       "icon": "assets/icons/png",
       "target": [
@@ -104,23 +104,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aaroncox/vessel.git"
+    "url": "git+https://github.com/Kennybll/polarity.git"
   },
   "author": {
-    "name": "Aaron Cox",
-    "email": "aaron@greymass.com",
-    "url": "https://github.com/aaroncox"
+    "name": "Kenneth Bennett",
+    "email": "kennybll@outlook.com",
+    "url": "https://github.com/Kennybll"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aaroncox/vessel/issues"
+    "url": "https://github.com/Kennybll/polarity/issues"
   },
   "keywords": [
-    "steem",
+    "scorum",
     "blockchain",
     "wallet"
   ],
-  "homepage": "https://github.com/aaroncox/vessel",
+  "homepage": "https://github.com/Kennybll/polarity",
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/internals/mocks/fileMock.js",
@@ -214,7 +214,6 @@
     "bip39": "^2.3.0",
     "bufferutil": "^3.0.0",
     "crypto-js": "^3.1.9-1",
-    "dsteem": "^0.6.0",
     "electron-config": "^1.0.0",
     "electron-debug": "^1.1.0",
     "electron-json-storage": "^3.0.5",
@@ -240,7 +239,6 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.68.3",
     "source-map-support": "^0.4.15",
-    "steem": "^0.6.4",
     "url-parse": "^1.2.0",
     "utf-8-validate": "^3.0.1"
   },

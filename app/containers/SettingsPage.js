@@ -18,9 +18,9 @@ class SettingsPage extends Component {
       <ContentBar>
         <Segment padded attached secondary>
           <Header
-            icon="settings"
+            icon={<i className="fas fa-cog right"></i>}
             content="Wallet Settings"
-            subheader="Configuration for Vessel wallets."
+            subheader="Configuration for Polarity wallets."
           />
         </Segment>
         <Settings {...this.props} />

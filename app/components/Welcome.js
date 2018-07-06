@@ -4,9 +4,7 @@ import { Redirect } from 'react-router';
 import { Button, Divider, Grid, Header, Segment } from 'semantic-ui-react';
 
 import KeysAdd from './Keys/Add';
-import KeysGenerate from './Keys/Generate';
 import KeysImport from './Keys/Import';
-import KeysLogin from './Keys/Login';
 import PreferredNode from './global/PreferredNode'
 
 const logo = require('../img/steem.png');
@@ -16,10 +14,6 @@ export default class Welcome extends Component {
 
   state = {
     importMethod: false
-  }
-
-  handleAuthorLink = () => {
-    shell.openExternal('https://steemit.com/@jesta');
   }
 
   render() {
@@ -37,17 +31,10 @@ export default class Welcome extends Component {
                 }}
               />
               <Header size="large">
-                Vessel
+                Polarity
                 <Header.Subheader>
                   <p>
-                    Desktop wallet for the Steem Blockchain
-                  </p>
-                  <p>
-                    Created by
-                    {' '}
-                    <a onClick={this.handleAuthorLink}>
-                      jesta
-                    </a>
+                    Desktop wallet for the Scorum Blockchain
                   </p>
                 </Header.Subheader>
               </Header>
@@ -59,7 +46,7 @@ export default class Welcome extends Component {
                 <Header>
                   Getting Started
                   <Header.Subheader>
-                    To get started with Vessel, an account must be added to the wallet.
+                    To get started with Polarity, an account must be added to the wallet.
                   </Header.Subheader>
                 </Header>
 

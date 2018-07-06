@@ -126,3 +126,7 @@ pre code {
 a {
   cursor: pointer;
 }
+
+.right {
+  margin-right: 10px;
+}

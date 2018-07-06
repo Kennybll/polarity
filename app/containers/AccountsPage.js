@@ -26,11 +26,6 @@ class AccountsPage extends Component {
     addAccount: false
   };
 
-  constructor(props) {
-    super(props);
-    props.actions.getMinimumAccountDelegation(props.preferences);
-  }
-
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   handleAddAccount = () => {
@@ -75,7 +70,7 @@ class AccountsPage extends Component {
       modal = (
         <Modal
           open
-          closeIcon="close"
+          closeIcon={<i className="fas fa-times"></i>}
           className="large"
           content={
             <Segment basic>
@@ -90,7 +85,7 @@ class AccountsPage extends Component {
       modal = (
         <Modal
           open
-          closeIcon="close"
+          closeIcon={<i className="fas fa-times"></i>}
           className="large"
           content={
             <Segment basic>
@@ -109,10 +104,6 @@ class AccountsPage extends Component {
     switch (activeItem) {
       case 'auths': {
         activeTab = <AccountsAuths {...this.props} />;
-        break;
-      }
-      case 'delegation': {
-        activeTab = <AccountsDelegation {...this.props} />;
         break;
       }
       case 'proxy': {
@@ -195,18 +186,11 @@ class AccountsPage extends Component {
             <Button
               color="green"
               onClick={this.handleAddAccount}
-              icon="plus"
+              icon={<i className="fas fa-plus right"></i>}
               floated="right"
               content="Add account"
             />
-            <Button
-              color="blue"
-              onClick={this.handleCreateAccount}
-              icon="plus"
-              floated="right"
-              content="Create account"
-            />
-            <Icon name="users" />
+            <i className="fas fa-users right"></i>
             <Header.Content>
               Accounts
               <Header.Subheader>
@@ -218,35 +202,28 @@ class AccountsPage extends Component {
         <Menu tabular attached>
           <Menu.Item
             name="keys"
-            icon="lock"
+            icon={<i className="fas fa-lock right"></i>}
             content="Account Keys"
             active={activeItem === 'keys'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
             name="auths"
-            icon="users"
+            icon={<i className="fas fa-users right"></i>}
             content="Account Auths"
             active={activeItem === 'auths'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            name="delegation"
-            icon="tasks"
-            content="SP Delegation"
-            active={activeItem === 'delegation'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
             name="proxy"
-            icon="sitemap"
+            icon={<i className="fas fa-sitemap right"></i>}
             content="Witness Proxy"
             active={activeItem === 'proxy'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
             name="voting"
-            icon="check"
+            icon={<i className="fas fa-check right"></i>}
             content="Witness Voting"
             active={activeItem === 'voting'}
             onClick={this.handleItemClick}
@@ -264,8 +241,7 @@ function mapStateToProps(state) {
     account: state.account,
     keys: state.keys,
     processing: state.processing,
-    preferences: state.preferences,
-    steem: state.steem
+    preferences: state.preferences
   };
 }
 

@@ -4,13 +4,11 @@ import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
-import { persistStore, autoRehydrate } from 'redux-persist'
-import * as accountActions from '../actions/account';
-import type { accountStateType } from '../reducers/account';
+import { persistStore, autoRehydrate } from 'redux-persist';
 
 const history = createHashHistory();
 
-const configureStore = (initialState: ?accountStateType) => {
+const configureStore = (initialState) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [autoRehydrate()];
@@ -31,7 +29,6 @@ const configureStore = (initialState: ?accountStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...accountActions,
     ...routerActions,
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose

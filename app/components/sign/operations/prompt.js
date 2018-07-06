@@ -283,7 +283,7 @@ export default class OperationsPrompt extends Component {
                 <Accordion.Title active={this.state.displayRawJSON === true} index={0} onClick={this.handleClick}>
                   <Header style={{margin: 0}}>
                     <Header.Content style={{padding: 0}}>
-                      <Icon name='dropdown' />
+                      {<i className="fas fa-caret-down"></i>}
                       Transaction JSON
                     </Header.Content>
                   </Header>
@@ -296,7 +296,7 @@ export default class OperationsPrompt extends Component {
           </Segment.Group>
           <Message
             color='yellow'
-            icon='warning sign'
+            icon={<i className="fas fa-exclamation-triangle"></i>}
             header='Please review this transaction'
             content='Once signed and broadcast - this transaction cannot be reversed. Please review what types of operations you are about to perform and confirm the values.'
           />

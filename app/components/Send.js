@@ -2,73 +2,19 @@
 import React, { Component } from 'react';
 import { Button, Checkbox, Grid, Label, Message, Modal, Radio, Segment, Select, Table } from 'semantic-ui-react';
 import { Form, Input } from 'formsy-semantic-ui-react';
-import steem from 'steem';
+import scorum from '../utils/scorum';
 
 const { shell } = require('electron');
-
-const exchangeOptions = [
-  {
-    key: 'bittrex',
-    text: 'Bittrex (@bittrex)',
-    value: 'bittrex'
-  },
-  {
-    key: 'blocktrades',
-    text: 'BlockTrades (@blocktrades)',
-    value: 'blocktrades',
-  },
-  {
-    key: 'changelly',
-    text: 'Changelly (@changelly)',
-    value: 'changelly',
-  },
-  {
-    key: 'openledger-dex',
-    text: 'OpenLedger (@openledger-dex)',
-    value: 'openledger-dex'
-  },
-  {
-    key: 'poloniex',
-    text: '(!) Poloniex (@poloniex)',
-    value: 'poloniex'
-  },
-  {
-    key: 'shapeshiftio',
-    text: 'Shapeshift (@shapeshiftio)',
-    value: 'shapeshiftio',
-  },
-];
-
-const exchangeLinks = {
-  bittrex: 'https://bittrex.com',
-  blocktrades: 'https://blocktrades.us',
-  changelly: 'https://changelly.com',
-  'openledger-dex': 'https://openledger.io',
-  poloniex: 'https://poloniex.com',
-  shapeshiftio: 'https://shapeshift.io'
-};
-
-const exchangeNotes = {
-  poloniex: (
-    <Message>
-      <strong>Warning</strong>:
-      Poloniex deposits have not been working for months, it's recommended to avoid this exchange. Please ensure verify whether or not their Steem wallet is active on their website.
-    </Message>
-  )
-}
-
-const exchangeSupportingEncryption = ['bittrex'];
 
 const defaultState = {
   from: '',
   to: '',
   amount: '',
-  symbol: 'STEEM',
+  symbol: 'SCR',
   memo: '',
   memoEncrypted: false,
   encryptMemo: false,
   destination: 'account',
-  // destination: 'exchange',
   modalPreview: false,
 };
 
@@ -173,13 +119,12 @@ export default class Send extends Component {
   setAmountMaximum = (e: SyntheticEvent) => {
     const accounts = this.props.account.accounts;
     const { from, symbol } = this.state;
-    const field = (symbol === 'SBD') ? 'sbd_balance' : 'balance';
+    const field = 'balance';
     const amount = accounts[from][field].split(' ')[0];
     this.setState({ amount });
   }
 
   handleExternalLink = (e: SyntheticEvent) => {
-    shell.openExternal(exchangeLinks[this.state.to]);
   }
 
   handleFromChange = (e: SyntheticEvent, { value }: { value: any }) => {
@@ -202,18 +147,18 @@ export default class Send extends Component {
         const to = this.state.to;
         const memoKey = this.props.keys.permissions[from].memo
         // Make sure we have a memoKey set and it's a valid WIF
-        if(memoKey && steem.auth.isWif(memoKey)) {
+        if(memoKey && scorum.auth.isWif(memoKey)) {
           // Ensure it's the current memo key on file to prevent a user from using an invalid key
-          const derivedKey = steem.auth.wifToPublic(memoKey);
+          const derivedKey = scorum.auth.wifToPublic(memoKey);
           const memoPublic = this.props.account.accounts[from].memo_key;
           if (derivedKey === memoPublic) {
             // Load the account we're sending to
-            steem.api.getAccounts([to], (err, result) => {
+            scorum.api.getAccounts([to], (err, result) => {
               if(result.length > 0) {
                 const toAccount = result[0];
                 const toMemoPublic = toAccount.memo_key;
                 // Generate encrypted memo based on their public memo key + our private memo key
-                const memoEncrypted = steem.memo.encode(memoKey, toMemoPublic, `#${cleaned}`);
+                const memoEncrypted = scorum.memo.encode(memoKey, toMemoPublic, `#${cleaned}`);
                 // Set the state to reflect
                 this.setState({
                   memo: cleaned,
@@ -248,10 +193,10 @@ export default class Send extends Component {
   }
 
   handleConfirm = (e: SyntheticEvent) => {
-    const { from, to, symbol, memo, memoEncrypted } = this.state;
+    const { from, to, memo, memoEncrypted } = this.state;
     const usedMemo = memoEncrypted || memo;
-    const amount = parseFloat(this.state.amount).toFixed(3);
-    const amountFormat = [amount, symbol].join(' ');
+    const amount = parseFloat(this.state.amount).toFixed(9);
+    const amountFormat = [amount, 'SCR'].join(' ');
     this.props.actions.useKey('transfer', { from, to, amount: amountFormat, memo: usedMemo }, this.props.keys.permissions[from]);
     this.setState({
       modalPreview: false
@@ -274,7 +219,7 @@ export default class Send extends Component {
         text: name + ' (unavailable - active/owner key not loaded)'
       };
     });
-    const field = (this.state.symbol === 'SBD') ? 'sbd_balance' : 'balance';
+    const field = 'balance';
     const availableAmount = accounts[this.state.from][field];
     const errorLabel = <Label color="red" pointing/>;
     let modal = false;
@@ -282,7 +227,7 @@ export default class Send extends Component {
       <Form.Field
         control={Input}
         name="to"
-        label="Enter the account name"
+        label="Enter the to account name"
         placeholder="Enter the account name to send to..."
         value={this.state.to}
         onChange={this.handleToChange}
@@ -292,51 +237,6 @@ export default class Send extends Component {
         errorLabel={errorLabel}
       />
     );
-    let encryptedField = false;
-    if (this.state.destination === 'exchange') {
-      let externalLink = false;
-      if (this.state.to) {
-        externalLink = (
-          <p style={{ marginLeft: '1em' }}>
-            {exchangeNotes[this.state.to]}
-            <a
-              onClick={this.handleExternalLink}
-              value={this.state.to}
-            >
-              {' '}
-              {exchangeLinks[this.state.to]}
-            </a>
-          </p>
-        );
-      }
-      toField = (
-        <div>
-          <Form.Field
-            control={Select}
-            search
-            value={this.state.to}
-            label="Select an exchange:"
-            options={exchangeOptions}
-            onChange={this.handleToChange}
-            placeholder="Receiving exchange..."
-          />
-          {externalLink}
-        </div>
-      );
-    }
-    if (keys.permissions[this.state.from] && keys.permissions[this.state.from].memo && steem.auth.isWif(keys.permissions[this.state.from].memo)) {
-      if (exchangeSupportingEncryption.indexOf(this.state.to) >= 0) {
-        encryptedField = (
-          <Form.Field>
-            <Checkbox
-              label='Encrypt Memo?'
-              checked={this.state.encryptMemo}
-              onChange={this.handleMemoEncryptChange}
-            />
-          </Form.Field>
-        );
-      }
-    }
     if (this.state.modalPreview) {
       modal = (
         <Modal
@@ -383,8 +283,7 @@ export default class Send extends Component {
                     </Table.Cell>
                     <Table.Cell>
                       {this.state.amount}
-                      {' '}
-                      {this.state.symbol}
+                      {' SCR'}
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -402,7 +301,7 @@ export default class Send extends Component {
           actions={[
             {
               key: 'no',
-              icon: 'cancel',
+              icon: <i className="fas fa-times"></i>,
               content: 'Cancel',
               color: 'red',
               floated: 'left',
@@ -411,7 +310,7 @@ export default class Send extends Component {
             },
             {
               key: 'yes',
-              icon: 'checkmark',
+              icon: <i className="fas fa-check"></i>,
               content: 'Confirmed - this is correct',
               color: 'green',
               onClick: this.handleConfirm,
@@ -429,11 +328,6 @@ export default class Send extends Component {
         {modal}
         <Grid divided centered>
           <Grid.Row>
-            <Grid.Column width={4}>
-              <div className="field">
-                <label htmlFor="from">Send from...</label>
-              </div>
-            </Grid.Column>
             <Grid.Column width={12}>
               <Form.Field
                 control={Select}
@@ -447,56 +341,14 @@ export default class Send extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={4}>
-              <div className="field">
-                <label htmlFor="destination">Send to a...</label>
-              </div>
-              <Form.Field
-                control={Radio}
-                name="destination"
-                label="another user"
-                value="account"
-                checked={this.state.destination === 'account'}
-                onChange={this.handleDestinationChange}
-              />
-              <Form.Field
-                control={Radio}
-                name="destination"
-                label="an exchange"
-                value="exchange"
-                checked={this.state.destination === 'exchange'}
-                onChange={this.handleDestinationChange}
-              />
-            </Grid.Column>
             <Grid.Column width={12}>
               {toField}
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
-            <Grid.Column width={4}>
-              <div className="field">
-                <label htmlFor="symbol">Select Currency Type</label>
-              </div>
-              <Form.Field
-                control={Radio}
-                name="symbol"
-                label="STEEM"
-                value="STEEM"
-                checked={this.state.symbol === 'STEEM'}
-                onChange={this.handleSymbolChange}
-              />
-              <Form.Field
-                control={Radio}
-                name="symbol"
-                label="SBD"
-                value="SBD"
-                checked={this.state.symbol === 'SBD'}
-                onChange={this.handleSymbolChange}
-              />
-            </Grid.Column>
             <Grid.Column width={12}>
               <div className="field">
-                <label htmlFor="amount">Total {this.state.symbol} to Send</label>
+                <label htmlFor="amount">Total SCR to Send</label>
               </div>
               <Form.Field
                 control={Input}
@@ -524,20 +376,6 @@ export default class Send extends Component {
                 {' '}
                 available to send.
               </p>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <Form.Field
-                control={Input}
-                name="memo"
-                label={this.state.memoDetected ? 'Memo automatically set via preferences.' : 'Optional memo to include'}
-                placeholder="Enter a memo to include with the transaction"
-                value={this.state.memo}
-                onChange={this.handleMemoChange}
-                disabled={this.state.memoDetected}
-              />
-              {encryptedField}
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>

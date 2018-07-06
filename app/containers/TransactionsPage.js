@@ -7,7 +7,6 @@ import { Dimmer, Header, Loader, Segment } from 'semantic-ui-react';
 
 import MenuBar from './MenuBar';
 import Balances from '../components/Transactions/Balances';
-import PendingRewards from '../components/Transactions/PendingRewards';
 import ContentBar from '../components/ContentBar';
 
 import * as AccountActions from '../actions/account';
@@ -28,7 +27,6 @@ class TransactionsPage extends Component {
     } else {
       account_data = (
         <Segment basic attached>
-          <PendingRewards {...this.props} />
           <Balances {...this.props} />
         </Segment>
       );
@@ -37,7 +35,7 @@ class TransactionsPage extends Component {
       <ContentBar>
         <Segment padded attached secondary>
           <Header
-            icon="lightning"
+            icon={<i className="fas fa-bolt right"></i>}
             content="Account Balances"
             subheader="The total balance of all accounts and the individual balances of each account."
           />

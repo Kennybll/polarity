@@ -9,12 +9,12 @@ export default class TitleBar extends Component {
     if (!color) color = "blue";
     let closeButton = false;
     if (handleClose) {
-      closeButton = <Icon name="close" style={{ float: 'right' }} onClick={handleClose} />
+      closeButton = <i className="fas fa-times" style={{ float: 'right' }} onClick={handleClose} />
     }
     return (
       <Segment color={color} clearing inverted attached data-tid="container">
         {closeButton}
-        <Header floated="left" icon={icon} content={title} />
+        <Header floated="left" icon={<i className={`fas fa-${icon}`}></i>} content={title} />
       </Segment>
     );
   }

@@ -36,9 +36,9 @@ class SendPage extends Component {
       <ContentBar>
         <Segment attached secondary padded>
           <Header
-            icon="send"
+            icon={<i className="fas fa-share-square right"></i>}
             content="Send Funds"
-            subheader="Transfer STEEM or SBD from one of your accounts to another user or exchange."
+            subheader="Transfer SCR from one of your accounts to another user."
           />
         </Segment>
         <Segment basic>

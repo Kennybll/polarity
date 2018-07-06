@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Button, Divider, Header, Icon, List, Segment, Table } from 'semantic-ui-react';
+import { Button, Divider, Header, List, Segment, Table } from 'semantic-ui-react';
 
 export default class KeysConfirm extends Component {
   render() {
@@ -31,11 +31,9 @@ export default class KeysConfirm extends Component {
                 Password Encrypted Wallet
               </Table.Cell>
               <Table.Cell>
-                <Icon
-                  name={encryptWallet ? 'checkmark' : 'remove'}
-                  color={encryptWallet ? 'green' : 'red'}
-                  size="large"
-                />
+                {
+                  encryptWallet ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>
+                }
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -47,17 +45,12 @@ export default class KeysConfirm extends Component {
                   <List.Item>
                     Create Posts
                   </List.Item>
-                  <List.Item>
-                    Claim Rewards
-                  </List.Item>
                 </List>
               </Table.Cell>
               <Table.Cell>
-                <Icon
-                  name={(confirmAccount.posting || confirmAccount.active || confirmAccount.owner) ? 'checkmark' : 'remove'}
-                  color={(confirmAccount.posting || confirmAccount.active || confirmAccount.owner) ? 'green' : 'red'}
-                  size="large"
-                />
+                {
+                  confirmAccount.posting ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>
+                }
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -72,11 +65,9 @@ export default class KeysConfirm extends Component {
                 </List>
               </Table.Cell>
               <Table.Cell>
-                <Icon
-                  name={(confirmAccount.active || confirmAccount.owner) ? 'checkmark' : 'remove'}
-                  color={(confirmAccount.active || confirmAccount.owner) ? 'green' : 'red'}
-                  size="large"
-                />
+              {
+                  confirmAccount.active ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>
+                }
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -91,11 +82,9 @@ export default class KeysConfirm extends Component {
                 </List>
               </Table.Cell>
               <Table.Cell>
-                <Icon
-                  name={confirmAccount.owner ? 'checkmark' : 'remove'}
-                  color={confirmAccount.owner ? 'green' : 'red'}
-                  size="large"
-                />
+                {
+                  confirmAccount.owner ? <i className="fas fa-check"></i> : <i className="fas fa-times"></i>
+                }
               </Table.Cell>
             </Table.Row>
           </Table.Body>

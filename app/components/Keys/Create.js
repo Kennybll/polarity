@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import steem from 'steem';
+import scorum from '../../utils/scorum';
 import _ from 'lodash';
 import { Button, Checkbox, Divider, Grid, Header, Icon, Label, List, Message, Segment, Input, Select, Table, Modal } from 'semantic-ui-react';
 import KeysConfirm from './Confirm';
@@ -29,7 +29,7 @@ export default class KeysCreate extends Component {
     this.setState({
       checkingUsername: true
     });
-    steem.api.getAccounts([name], (err, results) => {
+    scorum.api.getAccounts([name], (err, results) => {
       this.setState({
         checkingUsername: false,
         requestedName: (!err && !results.length) ? name : false,
@@ -68,11 +68,11 @@ export default class KeysCreate extends Component {
     let mnemonic = bip39.generateMnemonic();
     const name = this.state.requestedName;
     const seed = bip39.mnemonicToSeedHex(mnemonic);
-    let masterKey = steem.auth.getPrivateKeys(name, seed, ['master']);
+    let masterKey = scorum.auth.getPrivateKeys(name, seed, ['master']);
     let password = 'P' + masterKey.master;
     const types = ['owner', 'active', 'posting', 'memo'];
-    let pub = steem.auth.generateKeys(name, password, types);
-    let prv = steem.auth.getPrivateKeys(name, password, types);
+    let pub = scorum.auth.generateKeys(name, password, types);
+    let prv = scorum.auth.getPrivateKeys(name, password, types);
     this.setState({mnemonic, pub, prv, password});
   }
 

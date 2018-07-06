@@ -18,8 +18,8 @@ export default class Accounts extends Component {
       permissions = ['posting', 'active', 'owner'].map((permission) => (
         <Table.Cell key={permission} textAlign="center">
           {(t.props.keys.permissions[name].type === permission)
-            ? <Icon size="large" color="green" name="checkmark" />
-            : <Icon size="large" color="red" name="cancel" />
+            ? <i className="fas fa-check"></i>
+            : <i className="fas fa-times"></i>
           }
         </Table.Cell>
       ));
@@ -31,8 +31,8 @@ export default class Accounts extends Component {
           <Table.Cell textAlign="center">
             <Header size="small">
               {(this.props.keys.permissions[name].encrypted)
-                ? <Icon size="large" color="green" name="checkmark" />
-                : <Icon size="large" color="red" name="cancel" />
+                ? <i className="fas fa-check"></i>
+                : <i className="fas fa-times"></i>
               }
             </Header>
           </Table.Cell>
@@ -41,11 +41,11 @@ export default class Accounts extends Component {
             <span>
               {
                 (this.props.keys.permissions[name].memo)
-                ? <Icon size="large" color="green" name="checkmark" />
+                ? <i className="fas fa-check"></i>
                 : (
                   <Button
                     basic
-                    icon="circle plus"
+                    icon={<i className="fas fa-plus"></i>}
                     color="blue"
                     onClick={t.handleAddMemoKey}
                     value={name}
@@ -56,7 +56,7 @@ export default class Accounts extends Component {
           </Table.Cell>
           <Table.Cell>
             <Button
-              icon="trash"
+              icon={<i className="fas fa-trash-alt"></i>}
               color="orange"
               onClick={this.handleRemoveKey}
               value={name}

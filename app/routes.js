@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router';
-import steem from 'steem';
+import scorum from './utils/scorum';
 
 import App from './containers/App';
-import AdvancedPage from './containers/AdvancedPage';
 import AccountsPage from './containers/AccountsPage';
 import DebugPage from './containers/DebugPage';
 import PromptOperation from './containers/PromptOperation';
@@ -14,16 +13,9 @@ import SettingsPage from './containers/SettingsPage';
 import SendPage from './containers/SendPage';
 import TransactionsPage from './containers/TransactionsPage';
 import WelcomePage from './containers/WelcomePage';
-import VestingPage from './containers/VestingPage';
 import DecryptPrompt from './containers/DecryptPrompt';
-import ServerStatus from './containers/ServerStatus';
 
 import * as SteemActions from './actions/steem';
-
-// steem.config.set('websocket', 'wss://api.steemit.com')
-// // steem.api.getAccountHistory('jesta', -1, 1000, function(err, result) {
-// //   console.log(err, result);
-// // });
 
 class Routes extends Component {
 
@@ -40,10 +32,10 @@ class Routes extends Component {
   changeNode(url) {
     if (url && this.isURL(url)) {
       // If it's a valid URL, set
-      steem.api.setWebSocket(url);
+      scorum.api.setOptions({ url });
     } else {
       // Otherwise set to the rpc.buildteam.io node
-      steem.api.setWebSocket('https://rpc.buildteam.io');
+      scorum.api.setOptions({ url: 'https://prodnet.scorum.com' });
     }
     // Force a refresh immediately after change
     this.props.actions.refreshGlobalProps();
@@ -74,7 +66,6 @@ class Routes extends Component {
     }
     return (
       <App>
-        <ServerStatus {...this.props} />
         <DecryptPrompt />
         <Switch>
           <Route
@@ -93,10 +84,8 @@ class Routes extends Component {
           <Route path="/transactions" component={TransactionsPage} />
           <Route path="/debug" component={DebugPage} />
           <Route path="/send" component={SendPage} />
-          <Route path="/vesting" component={VestingPage} />
           <Route path="/accounts" component={AccountsPage} />
           <Route path="/settings" component={SettingsPage} />
-          <Route path="/advanced" component={AdvancedPage} />
         </Switch>
       </App>
     );
@@ -110,7 +99,7 @@ function mapStateToProps(state) {
     location: state.location,
     preferences: state.preferences,
     router: state.router,
-    steem: state.steem,
+    steem: state.steem
   };
 }
 

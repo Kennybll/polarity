@@ -53,31 +53,19 @@ class MenuBar extends Component {
               margin: '0 auto 1em',
             }}
           />
-          Vessel
+          Polarity
         </Menu.Item>
         <Link className="link item" to="/transactions">
-          <Icon name="dashboard" />
           Overview
         </Link>
         <Link className="link item" to="/send">
-          <Icon name="send" />
           Send
         </Link>
-        <Link className="link item" to="/vesting">
-          <Icon name="lightning" />
-          Vesting
-        </Link>
         <Link className="link item" to="/accounts">
-          <Icon name="users" />
           Accounts
         </Link>
         <Link className="link item" to="/settings">
-          <Icon name="settings" />
           Settings
-        </Link>
-        <Link className="link item" to="/advanced">
-          <Icon name="lab" />
-          Advanced
         </Link>
         <Menu.Item
           className="link"

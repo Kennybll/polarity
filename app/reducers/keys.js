@@ -26,12 +26,7 @@ const defaultState = {
   permissions: {}
 };
 
-type actionType = {
-  type: string,
-  payload: any
-};
-
-export default function keys(state: any = defaultState, action: actionType) {
+export default function keys(state = defaultState, action) {
   // console.log('>>> reducers/account', state, action);
   switch (action.type) {
     case KEY_ADD_PROMPT: {

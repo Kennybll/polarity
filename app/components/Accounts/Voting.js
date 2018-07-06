@@ -1,5 +1,5 @@
 // @flow
-import steem from 'steem';
+import scorum from '../../utils/scorum';
 
 import React, { Component } from 'react';
 import { Button, Divider, Form, Grid, Header, Input, Message, Modal, Segment, Table } from 'semantic-ui-react';
@@ -70,7 +70,7 @@ export default class AccountsVoting extends Component {
   }
   getWitnessesByVote = (e, props) => {
     let witnesses = [];
-    steem.api.getWitnessesByVote("", 100, function(err,response){
+    scorum.api.getWitnessesByVote("", 100, function(err,response){
       for (var i=0;i<response.length;i++) {
         witnesses.push({id: response[i]['owner'], label: response[i]['owner']});
       }
@@ -107,7 +107,7 @@ export default class AccountsVoting extends Component {
         <Modal
           size="small"
           open
-          header="Vote for a STEEM Witness"
+          header="Vote for a Scorum Witness"
           content={
             <Form
               loading={account_vote_witness_pending}
@@ -159,7 +159,7 @@ export default class AccountsVoting extends Component {
         <Modal
           size="small"
           open
-          header="Remove vote for a STEEM Witness"
+          header="Remove vote for a Scorum Witness"
           content={
             <Form
               loading={account_vote_witness_pending}
@@ -239,7 +239,7 @@ export default class AccountsVoting extends Component {
                             </Table.Cell>
                             <Table.Cell textAlign="center" style={{ width: 75 }}>
                               <Button
-                                icon="trash"
+                                icon={<i className="fas fa-trash-alt"></i>}
                                 color="orange"
                                 onClick={this.handleVoteWitnessRemove}
                                 value={{account: name, witness: witness}}
@@ -257,7 +257,7 @@ export default class AccountsVoting extends Component {
           </Table.Cell>
           <Table.Cell textAlign="center" style={{ width: 75 }}>
             <Button
-              icon="plus"
+              icon={<i className="fas fa-plus"></i>}
               color="green"
               onClick={this.handleVoteWitness}
               value={name}

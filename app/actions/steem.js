@@ -1,5 +1,5 @@
 // @flow
-import steem from 'steem';
+import scorum from '../utils/scorum';
 import * as ProcessingActions from './processing';
 
 export const STEEM_GLOBALPROPS_UPDATE = 'STEEM_GLOBALPROPS_UPDATE';
@@ -7,7 +7,7 @@ export const STEEM_GLOBALPROPS_UPDATE_RESOLVED = 'STEEM_GLOBALPROPS_UPDATE_RESOL
 
 export function refreshGlobalProps() {
   return (dispatch: () => void) => {
-    steem.api.getDynamicGlobalProperties((err, results) => {
+    scorum.api.getDynamicGlobalProperties((err, results) => {
       if (err) {
         // dispatch({
         //   type: ACCOUNT_DATA_UPDATE_FAILED,

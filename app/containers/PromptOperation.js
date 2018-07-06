@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import steem from 'steem';
+import scorum from '../utils/scorum';
 
 import * as AccountActions from '../actions/account';
 import * as KeysActions from '../actions/keys';
@@ -134,7 +134,6 @@ class PromptOperation extends Component {
         modifyOpsPrompt={this.modifyOpsPrompt.bind(this)}
         ops={ops}
         processing={this.props.processing}
-        steem={this.props.steem}
         submitOps={this.submitOps.bind(this)}
       />
     );
@@ -146,8 +145,7 @@ function mapStateToProps(state) {
     account: state.account,
     keys: state.keys,
     preferences: state.preferences,
-    processing: state.processing,
-    steem: state.steem
+    processing: state.processing
   };
 }
 
