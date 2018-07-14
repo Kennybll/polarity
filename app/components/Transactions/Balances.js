@@ -71,7 +71,7 @@ export default class Balances extends Component {
           <Header>
             Account Balances
           </Header>
-          <Table celled unstackable attached color="blue">
+          <Table celled unstackable attached color="violet">
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell textAlign="right">

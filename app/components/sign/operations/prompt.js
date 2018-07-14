@@ -36,33 +36,13 @@ const opTemplates = {
     color: 'orange',
     message: (op) => `Set ${op.proxy} as witness voting proxy.`
   },
-  cancel_transfer_from_savings: {
-    color: 'orange',
-    message: (op) => `Cancel savings withdraw ${op.request_id} from ${op.from}.`
-  },
-  claim_reward_balance: {
-    color: 'green',
-    message: () => 'Claim pending reward balance.'
-  },
   comment: {
     color: 'green',
     message: () => 'Creating a post (Review JSON for info).'
   },
-  custom_json: {
-    color: 'green',
-    message: () => 'Custom Operation - Review JSON for more information.'
-  },
-  convert: {
-    color: 'orange',
-    message: (op) => `Convert ${op.amount} to equiv Steem (5 day wait).`
-  },
-  delegate_vesting_shares: {
+  delegate_scorumpower: {
     color: 'orange',
     message: (op) => `Delegate ${op.delegatee} ${op.vesting_shares}.`
-  },
-  feed_publish: {
-    color: 'green',
-    message: (op) => `Publish price feed of ${op.exchange_rate}.`
   },
   set_withdraw_vesting_route: {
     color: 'orange',
@@ -72,17 +52,9 @@ const opTemplates = {
     color: 'red',
     message: (op) => `Send ${op.to} ${op.amount}.`
   },
-  transfer_from_savings: {
-    color: 'orange',
-    message: (op) => `Withdraw ${op.amount} from ${op.from}'s savings account to ${op.to}'s account.`
-  },
-  transfer_to_savings: {
-    color: 'red',
-    message: (op) => `Send ${op.amount} from ${op.from}'s account to ${op.to}'s savings account.`
-  },
   transfer_to_vesting: {
     color: 'red',
-    message: (op) => `Send ${op.to} ${op.amount} as Steem Power.`
+    message: (op) => `Send ${op.to} ${op.amount} as Scorum Power.`
   },
   vote: {
     color: 'green',
@@ -118,8 +90,7 @@ export default class OperationsPrompt extends Component {
       if(meta.prompt) {
         switch(meta.type) {
           case "asset":
-          case "sbd":
-          case "steem":
+          case "src":
             return (
               <OperationsPromptFieldAsset
                 field={field}
@@ -140,7 +111,7 @@ export default class OperationsPrompt extends Component {
                 opData={opData}
               />
             )
-          case "vests":
+          case "sp":
             return (
               <OperationsPromptFieldVests
                 field={field}
@@ -199,19 +170,19 @@ export default class OperationsPrompt extends Component {
       const op = this.props.ops[0]
       const opData = op[1]
       switch(ops[0][0]) {
-        case 'delegate_vesting_shares':
+        case 'delegate_scorumpower':
           return [
-            <Header attached='top' key='op-header'><Icon name='power' />Delegate Steem Power</Header>,
+            <Header attached='top' key='op-header'><i className="fas fa-bolt right"></i>Delegate Scorum Power</Header>,
             <OperationsPromptDelegation account={this.props.account} opData={opData} steem={this.props.steem} />
           ]
         case 'transfer':
           return [
-            <Header attached='top' key='op-header'><Icon name='money' />Transfer Funds</Header>,
+            <Header attached='top' key='op-header'><i className="fas fa-money-bill right"></i>Transfer Funds</Header>,
             <OperationsPromptTransfer opData={opData} />
           ]
         case 'vote':
           return [
-            <Header attached='top' key='op-header'><Icon name='thumbs up' />Vote on a Post</Header>,
+            <Header attached='top' key='op-header'><i className="fas fa-plus right"></i>Vote on a Post</Header>,
             <OperationsPromptVote opData={opData} steem={this.props.steem} />
           ]
       }

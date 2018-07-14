@@ -41,10 +41,10 @@ class MenuBar extends Component {
       height = this.props.steem.props.head_block_number;
     }
     return (
-      <Menu vertical fixed="left" color="blue" inverted icon="labeled">
+      <Menu vertical fixed="left" color="violet" inverted icon="labeled">
         <Menu.Item header>
           <img
-            alt="Vessel"
+            alt="Polarity"
             className="ui tiny image"
             src={src}
             style={{

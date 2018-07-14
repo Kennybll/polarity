@@ -13,13 +13,11 @@ import OperationsPrompt from '../components/sign/operations/prompt'
 
 const permissions = {
   active: [
-    'account_update',
-    'custom_json'
+    'account_update'
   ],
   posting: [
     'vote',
-    'comment',
-    'custom_json'
+    'comment'
   ]
 }
 
@@ -29,19 +27,13 @@ const accountFields = {
   'account_update': ['account'],
   'account_witness_proxy': ['account'],
   'account_witness_vote': ['account'],
-  'cancel_transfer_from_savings': ['from'],
-  'claim_reward_balance': ['account'],
   'comment': ['author'],
-  'convert': ['owner'],
-  'decline_voting_rights': ['account'],
-  'delegate_vesting_shares': ['delegator'],
-  'set_withdraw_vesting_route': ['from_account'],
+  'delegate_scorumpower': ['delegator'],
+  'set_withdraw_scorumpower_route_to_account': ['from_account'],
   'transfer': ['from'],
-  'transfer_from_savings': ['from'],
-  'transfer_to_savings': ['from'],
-  'transfer_to_vesting': ['from'],
+  'transfer_to_scorumpower': ['from'],
   'vote': ['voter'],
-  'withdraw_vesting': ['account'],
+  'withdraw_scorumpower': ['account'],
   'witness_update': ['owner'],
 }
 
@@ -77,19 +69,6 @@ class PromptOperation extends Component {
   submitOps = (e) => {
     const { account, ops } = this.state
     const permissions = this.props.keys.permissions;
-    // Needs it's own independant section of logic, but here for now
-    ops.forEach((op, idx) => {
-      const opType = op[0]
-      const opData = op[1]
-      switch(opType) {
-        case 'convert':
-          // The requestid just needs to be a unique number, so currently setting to the timestamp
-          if(opData.requestid == '') {
-            ops[idx][1].requestid = Math.floor(Date.now() / 1000)
-          }
-          break
-      }
-    })
     this.props.actions.useKey('send', { operations: ops, extensions: [] }, permissions[account]);
     e.preventDefault()
   }

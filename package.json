@@ -48,8 +48,7 @@
         "name": "scorum",
         "role": "Viewer",
         "schemes": [
-          "scorum",
-          "polarity"
+          "scorum"
         ]
       }
     ],

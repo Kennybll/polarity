@@ -6,19 +6,14 @@ export default class OperationsPromptFieldAsset extends Component {
 
   constructor(props) {
     super(props)
-    let defaultAsset = 'STEEM'
-    if(props.meta.type === 'sbd') {
-      defaultAsset = 'SBD'
-    }
     this.state = {
-      assetType: defaultAsset,
-      assetAmount: 0,
-      defaultAsset,
+      assetType: 'SCR',
+      assetAmount: 0
     }
   }
 
   modifyAssetAmount = (e, { value, name }) => {
-    const amount = parseFloat(value).toFixed(3)
+    const amount = parseFloat(value).toFixed(9)
     this.setState({
       assetAmount: amount
     })
@@ -44,17 +39,13 @@ export default class OperationsPromptFieldAsset extends Component {
     const { field, meta, opData } = this.props
     const defaultValue = (opData[field]) ? parseFloat(opData[field].split(" ")[0]) : 0
     let options = []
-    const option_steem = { key: 'STEEM', text: 'STEEM', value: 'STEEM' }
-    const option_sbd = { key: 'SBD', text: 'SBD', value: 'SBD' }
+    const option_scr = { key: 'SCR', text: 'SCR', value: 'SCR' }
     switch(meta.type) {
       case "asset":
-        options.push(option_steem, option_sbd)
+        options.push(option_scr)
         break;
-      case "sbd":
-        options.push(option_sbd)
-        break;
-      case "steem":
-        options.push(option_steem)
+      case "scr":
+        options.push(option_scr)
         break;
     }
     return (
@@ -70,7 +61,7 @@ export default class OperationsPromptFieldAsset extends Component {
           name={field}
           defaultValue={defaultValue}
           onChange={this.modifyAssetAmount}
-          label={<Dropdown name={field} onChange={this.modifyAssetType} defaultValue={this.state.defaultAsset} options={options} />}
+          label='SCR'
           labelPosition='left'
         />
       </Form.Field>

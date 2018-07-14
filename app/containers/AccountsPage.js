@@ -114,6 +114,10 @@ class AccountsPage extends Component {
         activeTab = <AccountsVoting {...this.props} />;
         break;
       }
+      case 'delegation': {
+        activeTab = <AccountsDelegation {...this.props} />;
+        break;
+      }
       default: {
         activeTab = <Accounts {...this.props} />;
         break;
@@ -226,6 +230,13 @@ class AccountsPage extends Component {
             icon={<i className="fas fa-check right"></i>}
             content="Witness Voting"
             active={activeItem === 'voting'}
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name="delegation"
+            icon={<i className="fas fa-bolt right"></i>}
+            content="Delegations"
+            active={activeItem === 'delegation'}
             onClick={this.handleItemClick}
           />
         </Menu>

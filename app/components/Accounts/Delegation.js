@@ -12,15 +12,13 @@ export default class AccountsProxy extends Component {
     this.state = {
       editDelegationFor: false,
       sp: 0,
-      undelegateError: false,
-      vests: 0,
+      undelegateError: false
     };
     this.props.actions.resetState = this.resetState.bind(this);
   }
   state = {
     editDelegationFor: false,
-    sp: 0,
-    vests: 0,
+    sp: 0
   }
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.processing.account_delegate_vesting_shares_error) {
@@ -39,7 +37,6 @@ export default class AccountsProxy extends Component {
       editDelegationFor: false,
       sp: 0,
       undelegateError: false,
-      vests: 0,
       [this.state.editDelegationFor]: '',
     });
   }
@@ -51,12 +48,8 @@ export default class AccountsProxy extends Component {
     if (Number.isNaN(parsed)) {
       return
     }
-    const vests = parsed.toFixed(6);
-    const props = this.props.steem.props;
-    const totalVestsSteem = parseFloat(props.total_vesting_fund_steem.split(" ")[0])
-    const totalVests = parseFloat(props.total_vesting_shares.split(" ")[0])
-    const sp = (totalVestsSteem * vests / totalVests).toFixed(3);
-    this.setState({ vests, sp });
+    const sp = parsed.toFixed(9);
+    this.setState({ sp });
   }
 
   handleOnChangeComplete = (value) => {
@@ -64,19 +57,15 @@ export default class AccountsProxy extends Component {
     if (Number.isNaN(parsed)) {
       return
     }
-    const vests = parsed.toFixed(6);
-    const props = this.props.steem.props;
-    const totalVestsSteem = parseFloat(props.total_vesting_fund_steem.split(" ")[0])
-    const totalVests = parseFloat(props.total_vesting_shares.split(" ")[0])
-    const sp = (totalVestsSteem * vests / totalVests).toFixed(3);
-    this.setState({ vests, sp });
+    const sp = parsed.toFixed(9);
+    this.setState({ sp });
   }
   handleVestingSharesRemove = (e, props) => {
     let { delegator, delegatee, id } = props.value.delegatee;
     delegatee = delegatee.toLowerCase().replace('@', '');
     const permissions = this.props.keys.permissions;
     this.setState({undelegateError: false})
-    this.props.actions.useKey('setDelegateVestingShares', { delegator, delegatee, vestingShares: 0.000000 }, permissions[delegator])
+    this.props.actions.useKey('setDelegateVestingShares', { delegator, delegatee, vestingShares: 0.000000000 }, permissions[delegator])
   }
   handleVestingSharesEdit = (e, props) => {
     const t = this
@@ -94,35 +83,16 @@ export default class AccountsProxy extends Component {
     })
   }
   handleSetDelegateVestingConfirm = (e, props) => {
-    const { vests } = this.state;
+    const { sp } = this.state;
     const { permissions } = this.props.keys;
     const delegator = this.state.editDelegationFor;
     const delegatee = this.state[delegator];
-    this.props.actions.useKey('setDelegateVestingShares', { delegator, delegatee, vestingShares: vests }, permissions[delegator])
+    this.props.actions.useKey('setDelegateVestingShares', { delegator, delegatee, vestingShares: sp }, permissions[delegator])
     e.preventDefault();
   }
   handleOnChangeInput = (e, props) => {
     const { name, value } = props
-    const globalProps = this.props.steem.props;
-    const totalVestsSteem = parseFloat(globalProps.total_vesting_fund_steem.split(" ")[0])
-    const totalVests = parseFloat(globalProps.total_vesting_shares.split(" ")[0])
-    const parsed = parseFloat(value)
-    let vests, sp
-    if (Number.isNaN(parsed)) {
-      this.setState({ [name]: value });
-      return
-    }
-    if (name === 'vests') {
-      const fixed = parsed.toFixed(6);
-      sp = (totalVestsSteem * fixed / totalVests).toFixed(3)
-      vests = value
-    }
-    if (name === 'sp') {
-      const fixed = parsed.toFixed(3);
-      sp = value
-      vests = (fixed / totalVestsSteem * totalVests).toFixed(6)
-    }
-    this.setState({ vests, sp });
+    this.setState({ sp: parseFloat(value) });
   }
   handleChangeVestingShares = (e, props) => {
     const editing = this.state.editDelegationFor;
@@ -155,12 +125,12 @@ export default class AccountsProxy extends Component {
     if (this.state.editDelegationFor) {
       const name = this.state.editDelegationFor;
       const account = this.props.account.accounts[name];
-      const delegated = parseFloat(account.delegated_vesting_shares.split(" ")[0]);
-      const vests = parseFloat(account.vesting_shares.split(" ")[0]);
+      const delegated = parseFloat(account.delegated_scorumpower.split(" ")[0]);
+      const vests = parseFloat(account.scorumpower.split(" ")[0]);
       let existingDelegation = 0
       if (this.props.account.vestingDelegations && this.props.account.vestingDelegations[name]) {
         const existingDelegations = this.props.account.vestingDelegations[name]
-        existingDelegation = existingDelegations.reduce((a, b) => (b.delegatee === this.state[name]) ? a + parseFloat(b.vesting_shares.split(" ")[0]) : 0, 0)
+        existingDelegation = existingDelegations.reduce((a, b) => (b.delegatee === this.state[name]) ? a + parseFloat(b.scorumpower.split(" ")[0]) : 0, 0)
       }
       const available = vests - delegated + existingDelegation;
       const target = parseFloat(this.state.vests)
@@ -169,7 +139,7 @@ export default class AccountsProxy extends Component {
         <Modal
           size="small"
           open
-          header="Delegate Vests to another Account"
+          header="Delegate Scorum Power to another Account"
           onClose={this.resetState}
           content={
             <Form
@@ -181,7 +151,7 @@ export default class AccountsProxy extends Component {
               >
                 <p>
                   Please enter the name of the target account that you wish to delegate
-                  a portion of the {name} account's vested weight to.
+                  a portion of the {name} account's scorum power weight to.
                 </p>
                 <Segment padded>
                   <Form.Field>
@@ -196,20 +166,11 @@ export default class AccountsProxy extends Component {
                     />
                   </Form.Field>
                   <Form.Field>
-                    <label>Steem Power</label>
+                    <label>Scorum Power</label>
                     <Input
                       fluid
                       name="sp"
                       value={this.state.sp}
-                      onChange={this.handleOnChangeInput}
-                    />
-                  </Form.Field>
-                  <Form.Field>
-                    <label>Vesting Shares</label>
-                    <Input
-                      fluid
-                      name="vests"
-                      value={this.state.vests}
                       onChange={this.handleOnChangeInput}
                     />
                   </Form.Field>
@@ -221,7 +182,7 @@ export default class AccountsProxy extends Component {
                         <InputRange
                           maxValue={available}
                           minValue={0}
-                          value={this.state.vests}
+                          value={this.state.sp}
                           onChange={this.handleOnChange}
                           onChangeComplete={this.handleOnChangeComplete}
                         />
@@ -229,13 +190,9 @@ export default class AccountsProxy extends Component {
                     </Grid.Column>
                     <Grid.Column width={4}>
                       <Header textAlign="center" size="large">
-                        <Header.Subheader>Steem Power</Header.Subheader>
+                        <Header.Subheader>Scorum Power</Header.Subheader>
                         <NumericLabel params={numberFormat}>{this.state.sp}</NumericLabel>
                         {' SP'}
-                        <Header.Subheader>
-                          -<NumericLabel params={numberFormat}>{this.state.vests}</NumericLabel>
-                          {' VESTS'}
-                        </Header.Subheader>
                       </Header>
                     </Grid.Column>
                   </Grid.Row>
@@ -285,11 +242,11 @@ export default class AccountsProxy extends Component {
     const accounts = names.map((name) => {
       const account = this.props.account.accounts[name];
       const delegatees = (this.props.account.vestingDelegations || {})[name];
-      const delegated = account.delegated_vesting_shares;
-      const hasDelegated = (delegated && delegated !== "0.000000 VESTS");
+      const delegated = account.delegated_scorumpower;
+      const hasDelegated = (delegated && delegated !== "0.000000000 SP");
       const hasDelegatees = (delegatees && delegatees.length);
       const delegatedAmount = parseFloat(delegated.split(" ")[0]);
-      const vests = parseFloat(account.vesting_shares.split(" ")[0]);
+      const vests = parseFloat(account.scorumpower.split(" ")[0]);
       const available = vests - delegatedAmount;
       return (
         <Table.Row key={name}>
@@ -299,7 +256,7 @@ export default class AccountsProxy extends Component {
               <Header.Subheader>
                 <strong>
                   <NumericLabel params={numberFormat}>{vests}</NumericLabel>
-                </strong> VESTS
+                </strong> SP
               </Header.Subheader>
             </Header>
           </Table.Cell>
@@ -307,7 +264,7 @@ export default class AccountsProxy extends Component {
             <Header size="small">
               <NumericLabel params={numberFormat}>{available}</NumericLabel>
               <Header.Subheader>
-                VESTS
+                SP
               </Header.Subheader>
             </Header>
           </Table.Cell>
@@ -321,68 +278,13 @@ export default class AccountsProxy extends Component {
                 )
               }
               <Header.Subheader>
-                VESTS
+                SP
               </Header.Subheader>
             </Header>
           </Table.Cell>
           <Table.Cell>
-            {(hasDelegatees)
-              ? (
-                <Table size="small">
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>
-                        Delegatee
-                      </Table.HeaderCell>
-                      <Table.HeaderCell>
-                        Amount
-                      </Table.HeaderCell>
-                      <Table.HeaderCell collapsing>
-
-                      </Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                  {delegatees.map((delegatee) => {
-                    const vests = parseFloat(delegatee.vesting_shares.split(" ")[0])
-                    return (
-                      <Table.Row key={delegatee.id}>
-                        <Table.Cell>
-                          <AccountName name={delegatee.delegatee} />
-                        </Table.Cell>
-                        <Table.Cell>
-                          <NumericLabel params={numberFormat}>{vests}</NumericLabel>
-                        </Table.Cell>
-                        <Table.Cell>
-                          <Button.Group>
-                            <Button
-                              color="blue"
-                              size="small"
-                              icon="pencil"
-                              value={{ delegatee }}
-                              onClick={this.handleVestingSharesEdit}
-                            />
-                            <Button
-                              color="orange"
-                              size="small"
-                              icon="trash"
-                              value={{ delegatee }}
-                              onClick={this.handleVestingSharesRemove}
-                            />
-                          </Button.Group>
-                        </Table.Cell>
-                      </Table.Row>
-                    )
-                  })}
-                  </Table.Body>
-                </Table>
-              )
-              : 'No active delegations'
-            }
-          </Table.Cell>
-          <Table.Cell>
             <Button
-              icon="plus"
+              icon={<i className="fas fa-plus"></i>}
               color="green"
               onClick={this.handleSetDelegateVesting}
               value={name}
@@ -414,9 +316,6 @@ export default class AccountsProxy extends Component {
               </Table.HeaderCell>
               <Table.HeaderCell textAlign="center">
                 Delegating
-              </Table.HeaderCell>
-              <Table.HeaderCell textAlign="center">
-                Delegated
               </Table.HeaderCell>
               <Table.HeaderCell>
                 Controls

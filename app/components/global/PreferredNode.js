@@ -40,7 +40,7 @@ export default class RPC extends Component {
               />
             </Grid.Column>
             <Grid.Column width={7}>
-              <Form.Button color='blue' content='Update' label={`Currently: ${this.props.preferences.steemd_node}`}/>
+              <Form.Button color='violet' content='Update' label={`Currently: ${this.props.preferences.steemd_node}`}/>
             </Grid.Column>
           </Grid>
         </Segment>
